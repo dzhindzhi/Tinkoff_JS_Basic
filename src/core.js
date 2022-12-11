@@ -115,29 +115,24 @@ function sequence(start, step) {
  * deepEqual({arr: [22, 33], text: 'text'}, {arr: [22, 3], text: 'text2'}) // false
  */
 function deepEqual(firstObject, secondObject){
-    let equal = true;
-    let firstData ='',
-        secondData ='';
-    if (((Object.keys(firstObject || {}).length != Object.keys(secondObject || {}).length))) return false;
-    if((Object.keys(firstObject || {}).length + Object.keys(secondObject || {}).length) === 0){
-        if(isNaN(firstObject) && isNaN(secondObject)){
-            return equal = true;
+    if (
+        firstObject === secondObject ||
+        (firstObject !== firstObject && secondObject !== secondObject)
+    ) {
+        return true;
+    } else if ( firstObject && secondObject && typeof (firstObject) === 'object' && typeof (secondObject) === 'object' ) {
+        if ( Object.values(firstObject).length !== Object.values(secondObject).length) {
+            return false;
         }
-        else{
-            return equal = equal && firstObject === secondObject;
+        for (let x in firstObject) {
+            if ( !Object.prototype.hasOwnProperty.call(secondObject, x) ||!deepEqual(firstObject[x], secondObject[x]) ) {
+                return false;
+            }
         }
+        return true;
     }
-    for(let key in firstObject){
-        if (!(key in secondObject)) return false;
-        if (typeof firstObject[key] !== 'object'){
-            firstData += firstObject[key];
-            secondData += secondObject[key];
-            equal = equal &&(firstData === secondData)
-        }
-        else equal = equal && deepEqual(firstObject[key], secondObject[key]);
-    }
-        return equal;
-    }
+    return false;
+}
 module.exports = {
     isInteger,
     even,

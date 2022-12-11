@@ -179,7 +179,7 @@ describe('Задания core js', () => {
             assert.strictEqual(core.deepEqual(null, undefined), false);
             assert.equal(
                 core.deepEqual({func: dummyFunction}, {func: () => {}}),
-                true
+                false
             );
         });
     });
